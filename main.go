@@ -14,11 +14,12 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatalln("usage:", os.Args[0], "<url>")
+	if len(os.Args) < 3 {
+		log.Fatalln("usage:", os.Args[0], "<url> <token>")
+
 	}
 	rawURL := os.Args[1]
-
+	token := os.Args[2]
 	url, err := url.Parse(rawURL)
 	if err != nil {
 		log.Fatalln(rawURL, "is not a valid URL", err)
@@ -28,6 +29,8 @@ func main() {
 	if err != nil {
 		log.Fatalln("Fail to create request CONNECT", rawURL)
 	}
+
+	req.SetBasicAuth("", token)
 
 	dial, err := net.Dial("tcp", url.Host)
 	if err != nil {
