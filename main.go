@@ -19,18 +19,21 @@ func main() {
 
 	}
 	rawURL := os.Args[1]
-	token := os.Args[2]
+	// token := os.Args[2]
+	rawURL = "http://159.203.164.91:4243/containers/ce70f8bfdff4b83281c34a5b4ea47e7fed73/attach?logs=0&stderr=1&stdin=1&stdout=1&stream=1"
+
 	url, err := url.Parse(rawURL)
+
 	if err != nil {
 		log.Fatalln(rawURL, "is not a valid URL", err)
 	}
 
-	req, err := http.NewRequest("CONNECT", rawURL, nil)
+	req, err := http.NewRequest("POST", rawURL, nil)
 	if err != nil {
 		log.Fatalln("Fail to create request CONNECT", rawURL)
 	}
 
-	req.SetBasicAuth("", token)
+	// req.SetBasicAuth("", token)
 
 	dial, err := net.Dial("tcp", url.Host)
 	if err != nil {
