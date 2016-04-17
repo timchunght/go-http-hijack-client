@@ -3,6 +3,8 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
+	"go-http-hijack-client/Godeps/_workspace/src/gopkg.in/errgo.v1"
+	"go-http-hijack-client/term"
 	"io"
 	"log"
 	"net"
@@ -20,8 +22,6 @@ func main() {
 	}
 	rawURL := os.Args[1]
 	// token := os.Args[2]
-	rawURL = "http://159.203.164.91:4243/containers/ce70f8bfdff4b83281c34a5b4ea47e7fed73/attach?logs=0&stderr=1&stdin=1&stdout=1&stream=1"
-
 	url, err := url.Parse(rawURL)
 
 	if err != nil {
@@ -59,6 +59,12 @@ func main() {
 	log.Println("Hijack connection")
 	connection, _ := conn.Hijack()
 
+	if term.IsATTY(os.Stdin) {
+		if err := term.MakeRaw(os.Stdin); err != nil {
+			_ = errgo.Mask(err, errgo.Any)
+		}
+	}
+
 	fmt.Println("Pipe stdin to socket, and socket to stdout")
 	go io.Copy(connection, os.Stdin)
 	_, err = io.Copy(&ServerWriter{os.Stdout}, connection)
@@ -71,6 +77,5 @@ func main() {
 type ServerWriter struct{ io.Writer }
 
 func (w *ServerWriter) Write(b []byte) (int, error) {
-	w.Writer.Write([]byte("Server: "))
 	return w.Writer.Write(b)
 }

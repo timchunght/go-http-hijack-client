@@ -1,0 +1,21 @@
+{
+	"ImportPath": "go-http-hijack-client",
+	"GoVersion": "go1.6",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/gopass",
+			"Rev": "d6276286620e85e9e31268076a0b6c18369b125d"
+		},
+		{
+			"ImportPath": "github.com/andrew-d/go-termutil",
+			"Rev": "009166a695a2f516c749a26b4ac1f183d89aa336"
+		},
+		{
+			"ImportPath": "gopkg.in/errgo.v1",
+			"Rev": "66cb46252b94c1f3d65646f54ee8043ab38d766c"
+		}
+	]
+}
